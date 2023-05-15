@@ -2,7 +2,7 @@
 
 Decided to make a separate project. Added registration of multiple implementations, or specific implementations with LifetimeManagement management (for Unity).
 
-The fun is that this approach **covers about 90% of work with container**.
+The fun is that this approach **covers all work with container**.
 
 Also, if you need to register types from any other assembly with registrations with attributes — simply call **RegisterFromAnotherAssembly**.
 
