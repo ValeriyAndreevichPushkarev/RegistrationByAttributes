@@ -26,7 +26,7 @@ Call **RegisterFromAnotherAssembly** to register types with registration with at
 
 Made your own **CommonRegistration**.
 
-override 2 methods - **registerInContainer**, **registerManyInContainer**.
+override 3 methods - **registerInContainer**, **registerManyInContainer**.
 
 Write your own mapping for **LifetimeManagementType**.
 
