@@ -1,19 +1,20 @@
-# Автоматическая регистрация по атрибутам для .net
+# Automatic registration by attributes for .net
 
-Решил сделать отдельный проект. Добавил регистрацию множеств реализаций, или конкретных реализаций с управлением LifetimeManagement-ом (для Unity).
+Decided to make a separate project. Added registration of multiple implementations, or specific implementations with LifetimeManagement management (for Unity).
 
-## Как пользоваться?
+## How to use?
 
-Добавить **TypeRegistrationAttribute** на базовую сущность, реализации которой хочется регистрировать в контейнере.
+Add a **TypeRegistrationAttribute** to the base entity whose implementations you want to register in the container.
 
-Добавить **DerivedTypeRegistrationAttribute** на реализацию чтобы переопределить LifetimeManagement.
+Add **DerivedTypeRegistrationAttribute** to the implementation to override LifetimeManagement.
 
-Указать **LifetimeManagementType**.
+Specify **LifetimeManagementType**.
 
-Вызвать **UnityCommonRegistration.Register(container)**.
+Call **UnityCommonRegistration.Register(container)**.
 
-## Как добавить свой контейнер?
+## How to add your container?
 
-переопределить 2 метода - **registerInContainer**, **registerManyInContainer**. 
+override 2 methods - **registerInContainer**, **registerManyInContainer**.
 
-Написать свой маппинг для **LifetimeManagementType**.
+Write your own mapping for **LifetimeManagementType**.
+
