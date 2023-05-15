@@ -2,6 +2,12 @@
 
 Decided to make a separate project. Added registration of multiple implementations, or specific implementations with LifetimeManagement management (for Unity).
 
+The fun is that this approach **covers about 90% of work with container**.
+
+Also, if you need to register types from any other assembly with registrations with attributes — simply call **RegisterFromAnotherAssembly**.
+
+No more problems with importing types from another assemblies and so on. By design :).
+
 ## How to use?
 
 Add a **TypeRegistrationAttribute** to the base entity whose implementations you want to register in the container.
@@ -11,6 +17,8 @@ Add **DerivedTypeRegistrationAttribute** to the implementation to override Lifet
 Specify **LifetimeManagementType**.
 
 Call **UnityCommonRegistration.Register(container)**.
+
+Call **RegisterFromAnotherAssembly** to register types with registration with attributes from another assembly.
 
 ## How to add your container?
 
