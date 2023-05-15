@@ -14,6 +14,8 @@ Call **UnityCommonRegistration.Register(container)**.
 
 ## How to add your container?
 
+Made your own **CommonRegistration**.
+
 override 2 methods - **registerInContainer**, **registerManyInContainer**.
 
 Write your own mapping for **LifetimeManagementType**.
