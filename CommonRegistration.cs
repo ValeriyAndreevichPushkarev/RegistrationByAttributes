@@ -61,14 +61,29 @@ namespace RegistrationByAttributes
         }
 
         /// <summary>
-        /// 
+        /// Register single type in container
         /// </summary>
-        /// <param name="container"></param>
-        /// <param name="baseType"></param>
-        /// <param name="lifetimeManagement"></param>
+        /// <param name="container">container for registration</param>
+        /// <param name="baseType">single type for registration</param>
+        /// <param name="lifetimeManagement">lifetime management setting</param>
         protected abstract void registerInContainer(T container, Type baseType, LifetimeManagementType lifetimeManagement);
+
+        /// <summary>
+        /// Register base type and realization in container
+        /// </summary>
+        /// <param name="container">container for registration</param>
+        /// <param name="baseType">base type for registration(usually interface)</param>
+        /// <param name="derivedType">realization type for registration</param>
+        /// <param name="lifetimeManagement">lifetime management setting</param>
         protected abstract void registerInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement);
 
+        /// <summary>
+        /// Register base type and many realizations in container
+        /// </summary>
+        /// <param name="container">container for registration</param>
+        /// <param name="baseType">base type for registration(usually interface)</param>
+        /// <param name="derivedType">realization type for registration</param>
+        /// <param name="lifetimeManagement">lifetime management setting</param>
         protected abstract void registerManyInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement);
 
         private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>(Assembly assembly)

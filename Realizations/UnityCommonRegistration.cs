@@ -4,6 +4,9 @@ using Unity.Lifetime;
 
 namespace RegistrationByAttributes.Realizations
 {
+    /// <summary>
+    /// Registers all types with attributes in container
+    /// </summary>
     public class UnityCommonRegistration : CommonRegistration<UnityContainer>
     {
         protected override void registerInContainer(UnityContainer container, Type typeForRegistration1, Type typeForRegistration2, LifetimeManagementType lifetimeManagement)
