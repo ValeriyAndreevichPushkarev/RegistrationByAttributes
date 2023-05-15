@@ -46,6 +46,9 @@ namespace RegistrationByAttributes
                     {
                         lifetimeManagement = derivedType.AttributeType.lifetimeManagementType;
                     }
+                    
+                    if (baseType.TypeForRegistration == derivedType.TypeForRegistration)
+                        continue;
 
                     if (derivedTypes[baseType].Count > 1)
                         registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
