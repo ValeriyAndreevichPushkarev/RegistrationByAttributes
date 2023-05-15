@@ -8,6 +8,8 @@ Also, if you need to register types from any other assembly with registrations w
 
 No more problems with importing types from another assemblies and so on. By design :).
 
+Just add attributes.
+
 ## How to use?
 
 Add a **TypeRegistrationAttribute** to the base entity whose implementations you want to register in the container.
