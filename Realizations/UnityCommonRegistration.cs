@@ -13,6 +13,13 @@ namespace RegistrationByAttributes.Realizations
             container.RegisterType(typeForRegistration1, typeForRegistration2, ltm);
         }
 
+        protected override void registerInContainer(UnityContainer container, Type typeForRegistration1, LifetimeManagementType lifetimeManagement)
+        {
+            var ltm = getLifetimeManagement(lifetimeManagement);
+
+            container.RegisterType(typeForRegistration1, ltm);
+        }
+
         protected override void registerManyInContainer(UnityContainer container, Type typeForRegistration1, Type typeForRegistration2, LifetimeManagementType lifetimeManagement)
         {
             container.RegisterType(typeForRegistration1, typeForRegistration2, typeForRegistration2.Name);

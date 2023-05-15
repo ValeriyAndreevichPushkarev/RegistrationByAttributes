@@ -1,7 +1,7 @@
 ﻿namespace RegistrationByAttributes.Attributes
 {
     /// <summary>
-    /// Атрибут для базовых типов
+    /// Attribute for base types
     /// </summary>
     public class TypeRegistrationAttribute : Attribute
     {

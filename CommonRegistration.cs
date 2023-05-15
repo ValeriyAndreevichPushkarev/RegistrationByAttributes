@@ -7,11 +7,29 @@ namespace RegistrationByAttributes
     public abstract class CommonRegistration<T>
         where T : class
     {
+        /// <summary>
+        /// Register all types from calling assembly
+        /// </summary>
+        /// <param name="container">container for registration</param>
         public void Register(T container)
         {
-            var types = GetTypesWithAttributes<TypeRegistrationAttribute>();
+            var assembly = Assembly.GetCallingAssembly();
 
-            var DerivedTypes = GetAllDerivedTypes(types);
+            var types = GetTypesWithAttributes<TypeRegistrationAttribute>(assembly);
+            var DerivedTypes = GetAllDerivedTypes(types, assembly);
+
+            registerAllTypes(container, DerivedTypes);
+        }
+
+        /// <summary>
+        /// Register all types from another assembly
+        /// </summary>
+        /// <param name="container">container for registration</param>
+        /// <param name="assembly">Another assembly</param>
+        public void RegisterFromAnotherAssembly(T container, Assembly assembly)
+        {
+            var types = GetTypesWithAttributes<TypeRegistrationAttribute>(assembly);
+            var DerivedTypes = GetAllDerivedTypes(types, assembly);
 
             registerAllTypes(container, DerivedTypes);
         }
@@ -20,37 +38,48 @@ namespace RegistrationByAttributes
         {
             foreach (var baseType in derivedTypes.Keys)
             {
+                var lifetimeManagement = baseType.AttributeType.lifetimeManagementType;
+
                 foreach (var derivedType in derivedTypes[baseType])
                 {
-                    var lifetimeManagement = LifetimeManagementType.Default;
-
                     if (derivedType.AttributeType != null)
                     {
                         lifetimeManagement = derivedType.AttributeType.lifetimeManagementType;
                     }
 
-                    if (baseType.TypeForRegistration != derivedType.TypeForRegistration)
-                    {
-                        if (derivedTypes[baseType].Count>1)
-                            registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
-                        else
-                            registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
-                    }
+                    if (derivedTypes[baseType].Count > 1)
+                        registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                    else
+                        registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                }
+                //container.RegisterType<DataRenderer>();
+                if (derivedTypes[baseType].Count()==0)
+                {
+                    registerInContainer(container, baseType.TypeForRegistration, lifetimeManagement); 
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="baseType"></param>
+        /// <param name="lifetimeManagement"></param>
+        protected abstract void registerInContainer(T container, Type baseType, LifetimeManagementType lifetimeManagement);
         protected abstract void registerInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement);
 
         protected abstract void registerManyInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement);
 
-        private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>()
+        private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>(Assembly assembly)
             where T : Attribute
         {
-            var currentAssembly = Assembly.GetExecutingAssembly();
-
-            return currentAssembly.GetTypes()
+            var typesWithAttributes = assembly.GetTypes();
+            typesWithAttributes = typesWithAttributes
                 .Where(item => item.GetCustomAttributes(false).Any(item2 => item2 is T))
+                .ToArray();
+
+            return typesWithAttributes
                 .Select(item => new TypeAndAttributeData<T>
                 {
                     AttributeType = item.GetCustomAttributes<T>(false)
@@ -63,12 +92,10 @@ namespace RegistrationByAttributes
                 .ToList();
         }
 
-        private List<TypeAndAttributeData<T>> GetDerivedTypes<T>(Type type)
+        private List<TypeAndAttributeData<T>> GetDerivedTypes<T>(Type type, Assembly assembly)
             where T : Attribute
         {
-            var currentAssembly = Assembly.GetExecutingAssembly();
-
-            return currentAssembly.GetTypes()
+            return assembly.GetTypes()
                 .Where(item => type.IsAssignableFrom(item))
                 .Select(item => new TypeAndAttributeData<T>
                 {
@@ -81,13 +108,13 @@ namespace RegistrationByAttributes
                 })
             .ToList();
         }
-        private Dictionary<TypeAndAttributeData<TypeRegistrationAttribute>, List<TypeAndAttributeData<DerivedTypeRegistrationAttribute>>> GetAllDerivedTypes(List<TypeAndAttributeData<TypeRegistrationAttribute>> baseTypes)
+        private Dictionary<TypeAndAttributeData<TypeRegistrationAttribute>, List<TypeAndAttributeData<DerivedTypeRegistrationAttribute>>> GetAllDerivedTypes(List<TypeAndAttributeData<TypeRegistrationAttribute>> baseTypes, Assembly assembly)
         {
             var res = new Dictionary<TypeAndAttributeData<TypeRegistrationAttribute>, List<TypeAndAttributeData<DerivedTypeRegistrationAttribute>>>();
 
             foreach (var type in baseTypes)
             {
-                var derivedTypes = GetDerivedTypes<DerivedTypeRegistrationAttribute>(type.TypeForRegistration);
+                var derivedTypes = GetDerivedTypes<DerivedTypeRegistrationAttribute>(type.TypeForRegistration, assembly);
 
                 res.Add(type, derivedTypes);
             }

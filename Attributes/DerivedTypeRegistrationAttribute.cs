@@ -1,7 +1,7 @@
 ﻿namespace RegistrationByAttributes.Attributes
 {
     /// <summary>
-    /// Атрибут для изменения LifetimeManagementType у производных типов
+    /// Attribute for changing LifetimeManagement in derived types
     /// </summary>
     public class DerivedTypeRegistrationAttribute : Attribute
     {

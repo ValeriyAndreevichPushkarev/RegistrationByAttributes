@@ -1,19 +1,19 @@
 ﻿namespace RegistrationByAttributes.Data
 {
     /// <summary>
-    /// Сведения о типе и соответствующем атрибуте
+    /// Information about type for registration and attribute
     /// </summary>
     /// <typeparam name="T"></typeparam>
     internal class TypeAndAttributeData<T>
         where T : Attribute
     {
         /// <summary>
-        /// Тип для регистрации
+        /// Type for registration
         /// </summary>
         public Type TypeForRegistration;
 
         /// <summary>
-        /// Обьект атрибута
+        /// Registration attribute
         /// </summary>
         public T AttributeType;
     }

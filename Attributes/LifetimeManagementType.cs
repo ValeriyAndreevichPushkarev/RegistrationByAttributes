@@ -1,24 +1,24 @@
 ﻿namespace RegistrationByAttributes.Attributes
 {
     /// <summary>
-    /// Типы времени жизни обьекта
+    /// LifeTime of object in container
     /// </summary>
     public enum LifetimeManagementType
     {
         /// <summary>
-        /// Синглтон
+        /// Singletone
         /// </summary>
         Singletone,
         /// <summary>
-        /// 1 на поток
+        /// One per Thread
         /// </summary>
         PerThread,
         /// <summary>
-        /// Создается каждый раз
+        /// Creates every time
         /// </summary>
         PerResolve,
         /// <summary>
-        /// По умолчанию
+        /// Default
         /// </summary>
         Default
     }
