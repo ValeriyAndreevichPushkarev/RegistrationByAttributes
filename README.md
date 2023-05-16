@@ -6,6 +6,8 @@ The fun is that this approach **covers all work with container**.
 
 Also, if you need to register types from any other assembly with registrations with attributes — simply call **RegisterFromAnotherAssembly**.
 
+If you want to use different implementations depend on build type - use preprocessor directives.
+
 No more problems with importing types from another assemblies and so on. By design :).
 
 Just add attributes.
