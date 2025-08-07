@@ -1,6 +1,8 @@
 ﻿using RegistrationByAttributes.Attributes;
 using RegistrationByAttributes.Data;
+using System.IO;
 using System.Reflection;
+using Unity;
 
 namespace RegistrationByAttributes
 {
@@ -21,6 +23,13 @@ namespace RegistrationByAttributes
             registerAllTypes(container, DerivedTypes);
         }
 
+        public void Register(T container, Assembly assembly)
+        {
+            var types = GetTypesWithAttributes<TypeRegistrationAttribute>(assembly);
+            var DerivedTypes = GetAllDerivedTypes(types, assembly);
+
+            registerAllTypes(container, DerivedTypes);
+        }
         /// <summary>
         /// Register all types from another assembly
         /// </summary>
@@ -40,8 +49,11 @@ namespace RegistrationByAttributes
             {
                 var lifetimeManagement = baseType.AttributeType.lifetimeManagementType;
 
+
+
                 foreach (var derivedType in derivedTypes[baseType])
                 {
+                    //others
                     if (derivedType.AttributeType != null)
                     {
                         lifetimeManagement = derivedType.AttributeType.lifetimeManagementType;
@@ -49,17 +61,39 @@ namespace RegistrationByAttributes
                     
                     if (baseType.TypeForRegistration == derivedType.TypeForRegistration)
                         continue;
+                    //Generics
+                    if (baseType.TypeForRegistration.IsGenericType)
+                    {
+                        var iface = derivedType.TypeForRegistration.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == baseType.TypeForRegistration);
 
-                    if (derivedTypes[baseType].Count > 1)
-                        registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                        if (derivedType.TypeForRegistration.IsGenericType)
+                        {
+                            registerInContainer(container, iface.GetGenericTypeDefinition(), derivedType.TypeForRegistration.GetGenericTypeDefinition(), lifetimeManagement);
+                        }
+                        else
+                        {
+                            registerInContainer(container, iface, derivedType.TypeForRegistration, lifetimeManagement);
+                        }
+
+                        continue;
+                    }
+
+                    if (typeof(T) is IUnityContainer)
+                    {
+                        if (derivedTypes[baseType].Count > 1)
+                            registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                        else
+                            registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                    }
                     else
                         registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+
                 }
                 //container.RegisterType<DataRenderer>();
-                if (derivedTypes[baseType].Count()==0)
-                {
-                    registerInContainer(container, baseType.TypeForRegistration, lifetimeManagement); 
-                }
+                //if (derivedTypes[baseType].Count()==0)
+                //{
+                //    registerInContainer(container, baseType.TypeForRegistration, lifetimeManagement); 
+                //}
             }
         }
 
@@ -92,7 +126,7 @@ namespace RegistrationByAttributes
         private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>(Assembly assembly)
             where T : Attribute
         {
-            var typesWithAttributes = assembly.GetTypes();
+            var typesWithAttributes = assembly.GetTypes().Where(i=>i.IsInterface);
             typesWithAttributes = typesWithAttributes
                 .Where(item => item.GetCustomAttributes(false).Any(item2 => item2 is T))
                 .ToArray();
@@ -100,10 +134,7 @@ namespace RegistrationByAttributes
             return typesWithAttributes
                 .Select(item => new TypeAndAttributeData<T>
                 {
-                    AttributeType = item.GetCustomAttributes<T>(false)
-                    .Where(item2 => item2 is T)
-                    .Select(item2 => item2 as T)
-                    .FirstOrDefault(),
+                    AttributeType = item.GetCustomAttribute<T>(false),
                     TypeForRegistration = item
 
                 })
@@ -114,13 +145,18 @@ namespace RegistrationByAttributes
             where T : Attribute
         {
             return assembly.GetTypes()
-                .Where(item => type.IsAssignableFrom(item))
+                .Where(item =>  !item.IsAbstract && !item.IsInterface && 
+                    (
+                    item.GetInterfaces().Any(i => (!i.IsGenericType && i== type) ||
+                                                  (i.IsGenericType && i.GetGenericTypeDefinition()== type) ||
+                                                  (i.IsGenericType && type.IsGenericType && i== type.GetGenericTypeDefinition()) ||
+                                                  (i.IsGenericType && type.IsGenericType && i.GetGenericTypeDefinition() == type.GetGenericTypeDefinition())
+                                                  )
+                    )
+                )
                 .Select(item => new TypeAndAttributeData<T>
                 {
-                    AttributeType = item.GetCustomAttributes<T>(false)
-                .Where(item2 => item2 is T)
-                .Select(item2 => item2 as T)
-                .FirstOrDefault(),
+                    AttributeType = item.GetCustomAttribute<T>(false),
                     TypeForRegistration = item
 
                 })
