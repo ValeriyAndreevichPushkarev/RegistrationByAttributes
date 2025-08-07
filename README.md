@@ -20,9 +20,9 @@ Add **DerivedTypeRegistrationAttribute** to the implementation to override Lifet
 
 Specify **LifetimeManagementType**.
 
-Call **UnityCommonRegistration.Register(container)**.
+Call **(YourContainer).RegisterWithAttributes()**.
 
-Call **RegisterFromAnotherAssembly** to register types with registration with attributes from another assembly.
+Call **(YourContainer).RegisterWithAttributes(AnotherAssembly)** to register types with registration with attributes from another assembly.
 
 ## How to add your container?
 
