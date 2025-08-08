@@ -1,4 +1,5 @@
-﻿using RegistrationByAttributes.Attributes;
+﻿
+using RegistrationByAttributes.Attributes;
 
 namespace test.Tests.Simple.TestOneToOne
 {

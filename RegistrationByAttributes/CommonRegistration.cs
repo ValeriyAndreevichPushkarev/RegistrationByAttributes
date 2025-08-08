@@ -64,7 +64,7 @@ namespace RegistrationByAttributes
                     //Generics
                     if (baseType.TypeForRegistration.IsGenericType)
                     {
-                        var iface = derivedType.TypeForRegistration.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == baseType.TypeForRegistration);
+                        var iface = derivedType.TypeForRegistration.GetInterfaces().First(i =>  i == baseType.TypeForRegistration);
 
                         if (derivedType.TypeForRegistration.IsGenericType)
                         {
@@ -89,11 +89,6 @@ namespace RegistrationByAttributes
                         registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
 
                 }
-                //container.RegisterType<DataRenderer>();
-                //if (derivedTypes[baseType].Count()==0)
-                //{
-                //    registerInContainer(container, baseType.TypeForRegistration, lifetimeManagement); 
-                //}
             }
         }
 
@@ -126,12 +121,9 @@ namespace RegistrationByAttributes
         private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>(Assembly assembly)
             where T : Attribute
         {
-            var typesWithAttributes = assembly.GetTypes().Where(i=>i.IsInterface);
-            typesWithAttributes = typesWithAttributes
-                .Where(item => item.GetCustomAttributes(false).Any(item2 => item2 is T))
-                .ToArray();
+            var implementedInterfaces = assembly.GetTypes().SelectMany(i=>i.GetInterfaces().Where(iface=>iface.GetCustomAttributes(false).Any(item2 => item2 is T))).Distinct().ToList();
 
-            return typesWithAttributes
+            return implementedInterfaces
                 .Select(item => new TypeAndAttributeData<T>
                 {
                     AttributeType = item.GetCustomAttribute<T>(false),
@@ -149,8 +141,7 @@ namespace RegistrationByAttributes
                     (
                     item.GetInterfaces().Any(i => (!i.IsGenericType && i== type) ||
                                                   (i.IsGenericType && i.GetGenericTypeDefinition()== type) ||
-                                                  (i.IsGenericType && type.IsGenericType && i== type.GetGenericTypeDefinition()) ||
-                                                  (i.IsGenericType && type.IsGenericType && i.GetGenericTypeDefinition() == type.GetGenericTypeDefinition())
+                                                  (i.IsGenericType && i == type) 
                                                   )
                     )
                 )

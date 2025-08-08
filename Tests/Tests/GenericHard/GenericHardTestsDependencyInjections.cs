@@ -52,6 +52,7 @@ namespace Tests
             app.RegisterByAttributes();
             var sp = app.BuildServiceProvider();
 
+            var data = sp.GetServices<IOneToManyGenericHard<int>>();
             Assert.IsTrue(sp.GetServices<IOneToManyGenericHard<int>>()?.Count() == 2);
 
             Assert.IsTrue(sp.GetServices<IOneToManyGenericHard<int>>().First() == sp.GetServices<IOneToManyGenericHard<int>>().First());
