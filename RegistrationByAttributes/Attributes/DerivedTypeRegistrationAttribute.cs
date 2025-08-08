@@ -6,11 +6,19 @@
     [AttributeUsage(AttributeTargets.Class)]
     public class DerivedTypeRegistrationAttribute : Attribute
     {
-        public DerivedTypeRegistrationAttribute(LifetimeManagementType lifetimeManagement)
+        /// <summary>
+        /// Attribute that redefines container configuration
+        /// </summary>
+        /// <param name="lifetimeManagement">Lifetime management for specified class</param>
+        /// <param name="name">Name for named instance, or null</param>
+        public DerivedTypeRegistrationAttribute(LifetimeManagementType lifetimeManagement = LifetimeManagementType.Default, string name = null)
         {
             lifetimeManagementType = lifetimeManagement;
+            this.name = name;
         }
 
         public LifetimeManagementType lifetimeManagementType;
+
+        public string name;
     }
 }

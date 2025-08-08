@@ -8,41 +8,83 @@ namespace RegistrationByAttributes.Realizations
     /// </summary>
     public class DependencyInjectionCommonRegistration : CommonRegistration<IServiceCollection>
     {
-        protected override void registerInContainer(IServiceCollection container, Type baseType, LifetimeManagementType lifetimeManagement)
+        protected override void registerInContainer(IServiceCollection container, Type baseType, LifetimeManagementType lifetimeManagement, string key = null)
         {
-            switch(lifetimeManagement)
+            if (key == null)
             {
-                case LifetimeManagementType.Default:
-                    container.AddScoped(baseType);
-                    break;
-                case LifetimeManagementType.Singletone:
-                    container.AddSingleton(baseType);
-                    break;
-                case LifetimeManagementType.PerResolve:
-                    container.AddTransient(baseType);
-                    break;
-                case LifetimeManagementType.PerThread:
-                    container.AddScoped(baseType);
-                    break;
+                switch (lifetimeManagement)
+                {
+                    case LifetimeManagementType.Default:
+                        container.AddScoped(baseType);
+                        break;
+                    case LifetimeManagementType.Singletone:
+                        container.AddSingleton(baseType);
+                        break;
+                    case LifetimeManagementType.PerResolve:
+                        container.AddTransient(baseType);
+                        break;
+                    case LifetimeManagementType.PerThread:
+                        container.AddScoped(baseType);
+                        break;
+                }
             }
+            else
+            {
+                switch (lifetimeManagement)
+                {
+                    case LifetimeManagementType.Default:
+                        container.AddKeyedScoped(baseType,key);
+                        break;
+                    case LifetimeManagementType.Singletone:
+                        container.AddKeyedSingleton(baseType, key,baseType);
+                        break;
+                    case LifetimeManagementType.PerResolve:
+                        container.AddKeyedTransient(baseType, key);
+                        break;
+                    case LifetimeManagementType.PerThread:
+                        container.AddKeyedScoped(baseType, key);
+                        break;
+                    }
+                }
         }
 
-        protected override void registerInContainer(IServiceCollection container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement)
+        protected override void registerInContainer(IServiceCollection container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement, string key = null)
         {
-            switch (lifetimeManagement)
+            if (key == null)
             {
-                case LifetimeManagementType.Default:
-                    container.AddScoped(baseType, derivedType);
-                    break;
-                case LifetimeManagementType.Singletone:
-                    container.AddSingleton(baseType, derivedType);
-                    break;
-                case LifetimeManagementType.PerResolve:
-                    container.AddTransient(baseType, derivedType);
-                    break;
-                case LifetimeManagementType.PerThread:
-                    container.AddScoped(baseType, derivedType);
-                    break;
+                switch (lifetimeManagement)
+                {
+                    case LifetimeManagementType.Default:
+                        container.AddScoped(baseType, derivedType);
+                        break;
+                    case LifetimeManagementType.Singletone:
+                        container.AddSingleton(baseType, derivedType);
+                        break;
+                    case LifetimeManagementType.PerResolve:
+                        container.AddTransient(baseType, derivedType);
+                        break;
+                    case LifetimeManagementType.PerThread:
+                        container.AddScoped(baseType, derivedType);
+                        break;
+                }
+            }
+            else
+            {
+                switch (lifetimeManagement)
+                {
+                    case LifetimeManagementType.Default:
+                        container.AddKeyedScoped(baseType, key, derivedType);
+                        break;
+                    case LifetimeManagementType.Singletone:
+                        container.AddKeyedSingleton(baseType, key, derivedType);
+                        break;
+                    case LifetimeManagementType.PerResolve:
+                        container.AddKeyedTransient(baseType, key, derivedType);
+                        break;
+                    case LifetimeManagementType.PerThread:
+                        container.AddKeyedScoped(baseType, key, derivedType);
+                        break;
+                }
             }
         }
 

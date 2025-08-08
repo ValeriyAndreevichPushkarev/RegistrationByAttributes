@@ -53,10 +53,12 @@ namespace RegistrationByAttributes
 
                 foreach (var derivedType in derivedTypes[baseType])
                 {
-                    //others
+                    //If attribute on class is present
+                    //Then, change lifetimanagement if its not default
                     if (derivedType.AttributeType != null)
                     {
-                        lifetimeManagement = derivedType.AttributeType.lifetimeManagementType;
+                        if (derivedType.AttributeType.lifetimeManagementType != LifetimeManagementType.Default)
+                            lifetimeManagement = derivedType.AttributeType.lifetimeManagementType;
                     }
                     
                     if (baseType.TypeForRegistration == derivedType.TypeForRegistration)
@@ -68,11 +70,11 @@ namespace RegistrationByAttributes
 
                         if (derivedType.TypeForRegistration.IsGenericType)
                         {
-                            registerInContainer(container, iface.GetGenericTypeDefinition(), derivedType.TypeForRegistration.GetGenericTypeDefinition(), lifetimeManagement);
+                            registerInContainer(container, iface.GetGenericTypeDefinition(), derivedType.TypeForRegistration.GetGenericTypeDefinition(), lifetimeManagement, derivedType?.AttributeType?.name);
                         }
                         else
                         {
-                            registerInContainer(container, iface, derivedType.TypeForRegistration, lifetimeManagement);
+                            registerInContainer(container, iface, derivedType.TypeForRegistration, lifetimeManagement, derivedType?.AttributeType?.name);
                         }
 
                         continue;
@@ -83,10 +85,10 @@ namespace RegistrationByAttributes
                         if (derivedTypes[baseType].Count > 1)
                             registerManyInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
                         else
-                            registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                            registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement, derivedType?.AttributeType?.name);
                     }
                     else
-                        registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement);
+                        registerInContainer(container, baseType.TypeForRegistration, derivedType.TypeForRegistration, lifetimeManagement, derivedType?.AttributeType?.name);
 
                 }
             }
@@ -98,7 +100,7 @@ namespace RegistrationByAttributes
         /// <param name="container">container for registration</param>
         /// <param name="baseType">single type for registration</param>
         /// <param name="lifetimeManagement">lifetime management setting</param>
-        protected abstract void registerInContainer(T container, Type baseType, LifetimeManagementType lifetimeManagement);
+        protected abstract void registerInContainer(T container, Type baseType, LifetimeManagementType lifetimeManagement, string key = null);
 
         /// <summary>
         /// Register base type and realization in container
@@ -107,7 +109,7 @@ namespace RegistrationByAttributes
         /// <param name="baseType">base type for registration(usually interface)</param>
         /// <param name="derivedType">realization type for registration</param>
         /// <param name="lifetimeManagement">lifetime management setting</param>
-        protected abstract void registerInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement);
+        protected abstract void registerInContainer(T container, Type baseType, Type derivedType, LifetimeManagementType lifetimeManagement, string key = null);
 
         /// <summary>
         /// Register base type and many realizations in container
@@ -121,7 +123,9 @@ namespace RegistrationByAttributes
         private List<TypeAndAttributeData<T>> GetTypesWithAttributes<T>(Assembly assembly)
             where T : Attribute
         {
-            var implementedInterfaces = assembly.GetTypes().SelectMany(i=>i.GetInterfaces().Where(iface=>iface.GetCustomAttributes(false).Any(item2 => item2 is T))).Distinct().ToList();
+            var implementedInterfaces = assembly.GetTypes()
+                .Where(item => !item.IsAbstract && !item.IsInterface)
+                .SelectMany(i=>i.GetInterfaces().Where(iface=>iface.GetCustomAttributes(false).Any(item2 => item2 is T))).Distinct().ToList();
 
             return implementedInterfaces
                 .Select(item => new TypeAndAttributeData<T>

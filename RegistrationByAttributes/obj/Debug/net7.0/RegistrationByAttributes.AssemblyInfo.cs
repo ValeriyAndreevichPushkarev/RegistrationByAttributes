@@ -13,11 +13,12 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("RegistrationByAttributes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("Used to register in container by attributes")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.4")]
 [assembly: System.Reflection.AssemblyProductAttribute("RegistrationByAttributes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RegistrationByAttributes")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.4")]
 
 // Создано классом WriteCodeFragment MSBuild.
 

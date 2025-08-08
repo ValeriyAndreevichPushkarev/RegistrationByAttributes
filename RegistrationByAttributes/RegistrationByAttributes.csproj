@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>RegistrationByAttributes</Title>
     <Description>Used to register in container by attributes</Description>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

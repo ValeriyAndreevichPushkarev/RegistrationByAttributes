@@ -9,18 +9,33 @@ namespace RegistrationByAttributes.Realizations
     /// </summary>
     public class UnityCommonRegistration : CommonRegistration<IUnityContainer>
     {
-        protected override void registerInContainer(IUnityContainer container, Type typeForRegistration1, Type typeForRegistration2, LifetimeManagementType lifetimeManagement)
+        protected override void registerInContainer(IUnityContainer container, Type typeForRegistration1, Type typeForRegistration2, LifetimeManagementType lifetimeManagement, string key = null)
         {
             var ltm = getLifetimeManagement(lifetimeManagement);
 
-            container.RegisterType(typeForRegistration1, typeForRegistration2, ltm);
+            if (key==null)
+            {
+                container.RegisterType(typeForRegistration1, typeForRegistration2, ltm);
+            }
+            else
+            {
+                container.RegisterType(typeForRegistration1, typeForRegistration2, key, ltm);
+            }
+            
         }
 
-        protected override void registerInContainer(IUnityContainer container, Type typeForRegistration1, LifetimeManagementType lifetimeManagement)
+        protected override void registerInContainer(IUnityContainer container, Type typeForRegistration1, LifetimeManagementType lifetimeManagement, string key = null)
         {
             var ltm = getLifetimeManagement(lifetimeManagement);
 
-            container.RegisterType(typeForRegistration1, ltm);
+            if (key == null)
+            {
+                container.RegisterType(typeForRegistration1, ltm);
+            }
+            else
+            {
+                container.RegisterType(typeForRegistration1, key, ltm);
+            }
         }
 
         protected override void registerManyInContainer(IUnityContainer container, Type typeForRegistration1, Type typeForRegistration2, LifetimeManagementType lifetimeManagement)

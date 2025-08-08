@@ -38,6 +38,8 @@ namespace Tests
             app.RegisterByAttributes();
             var sp = app.BuildServiceProvider();
 
+            var service = sp.GetService<IOneToMany>();
+
             Assert.IsTrue(sp.GetServices<IOneToMany>()?.Count()==2);
 
             Assert.IsTrue(sp.GetServices<IOneToMany>().First() == sp.GetServices<IOneToMany>().First());
