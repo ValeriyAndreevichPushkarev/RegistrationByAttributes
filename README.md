@@ -16,7 +16,7 @@ Just add attributes.
 
 Add a **TypeRegistrationAttribute** to the base entity whose implementations you want to register in the container.
 
-Add **DerivedTypeRegistrationAttribute** to the implementation to override LifetimeManagement.
+Add **DerivedTypeRegistrationAttribute** to the implementation to override LifetimeManagement. If you want named instance - add name in DerivedTypeRegistrationAttribute.
 
 Specify **LifetimeManagementType**.
 
