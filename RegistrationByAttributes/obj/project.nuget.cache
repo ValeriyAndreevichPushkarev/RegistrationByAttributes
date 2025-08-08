@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "+y5t2Ewq7I8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Валерий\\Downloads\\RegistrationByAttributes-main (3)\\RegistrationByAttributes-main\\RegistrationByAttributes\\RegistrationByAttributes.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Валерий\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.8\\microsoft.extensions.dependencyinjection.abstractions.9.0.8.nupkg.sha512",
+    "C:\\Users\\Валерий\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+    "C:\\Users\\Валерий\\.nuget\\packages\\unity\\5.11.10\\unity.5.11.10.nupkg.sha512"
+  ],
+  "logs": []
+}
