@@ -1,10 +1,10 @@
 # Automatic registration by attributes for .net
 
-That repository contains utilities to register any interface implementations in container.
+That repository contains utilities to register any interface implementations in the container.
 
-All you need is add attribute to the interface and call one method.
+All you need is to add an attribute to the interface and call one method.
 
-Now the project supports **Unity Container** and **Microsoft.Extensions.DependencyInjection**.
+Now the project supports Unity and DependencyInjection.Abstractions.
 
 No more problems with importing types from other assemblies and so on. By design :).
 
