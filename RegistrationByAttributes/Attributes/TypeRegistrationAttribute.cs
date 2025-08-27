@@ -1,4 +1,6 @@
-﻿namespace RegistrationByAttributes.Attributes
+﻿using System;
+
+namespace RegistrationByAttributes.Attributes
 {
     /// <summary>
     /// Attribute for base types

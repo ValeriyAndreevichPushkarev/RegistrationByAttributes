@@ -1,24 +1,24 @@
 # Automatic registration by attributes for .net
 
-That repository contains utilities to register any interface implementations in the container.
+Decided to make a separate project. Added registration of multiple implementations, or specific implementations with LifetimeManagement management (for Unity).
 
-All you need is to add an attribute to the interface and call one method.
+The fun is that this approach **covers all work with container**.
 
-Now the project supports Unity and DependencyInjection.Abstractions.
+Also, if you need to register types from any other assembly with registrations with attributes — simply call **RegisterFromAnotherAssembly**.
 
-No more problems with importing types from other assemblies and so on. By design :).
+If you want to use different implementations depend on build type - use preprocessor directives.
+
+No more problems with importing types from another assemblies and so on. By design :).
 
 Just add attributes.
 
-## How to use it?
+## How to use?
 
-Add a **TypeRegistrationAttribute** to the interface whose implementations you want to register in the container.
+Add a **TypeRegistrationAttribute** to the base entity whose implementations you want to register in the container.
 
-Add **DerivedTypeRegistrationAttribute** to the implementation to override LifetimeManagement or specify Name.
+Add **DerivedTypeRegistrationAttribute** to the implementation to override LifetimeManagement.
 
 Specify **LifetimeManagementType**.
-
-Specify **Name** if you want to make Keyed registration.
 
 Call **(YourContainer).RegisterWithAttributes()**.
 
@@ -26,8 +26,9 @@ Call **(YourContainer).RegisterWithAttributes(AnotherAssembly)** to register typ
 
 ## How to add your container?
 
-Make your own **CommonRegistration**.
+Made your own **CommonRegistration**.
 
 override 3 methods - **registerInContainer**, **registerManyInContainer**.
 
 Write your own mapping for **LifetimeManagementType**.
+

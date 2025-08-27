@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RegistrationByAttributes.Attributes;
+using System;
 
 namespace RegistrationByAttributes.Realizations
 {

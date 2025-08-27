@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ImplicitUsings>false</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>RegistrationByAttributes</Title>
     <Description>Used to register in container by attributes</Description>
@@ -12,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-    <PackageReference Include="Unity" Version="5.11.10" />
+    <PackageReference Include="Unity.Abstractions" Version="5.11.7" />
   </ItemGroup>
 
 </Project>

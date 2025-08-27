@@ -1,4 +1,6 @@
-﻿namespace RegistrationByAttributes.Data
+﻿using System;
+
+namespace RegistrationByAttributes.Data
 {
     /// <summary>
     /// Information about type for registration and attribute
